@@ -1,0 +1,110 @@
+@import "../../styles/variables.scss";
+
+.desktopContainer {
+  display: flex;
+  width: 100%;
+  max-height: 100px;
+  max-width: $max-content-width;
+  margin: 0 auto;
+  flex-direction: column;
+  padding: 20px 40px 0px 40px;
+  margin-bottom: 40px;
+
+  .upperRow {
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+
+    .textContainer {
+      padding: 15px 0;
+      flex-direction: row;
+      align-items: center;
+      height: 47px;
+      :not(:last-child) {
+        margin-right: 15px;
+      }
+      a {
+        font-size: 10px;
+        font-weight: 400;
+      }
+    }
+  }
+  .lowerRow {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-height: 30px;
+
+    .logo {
+      display: row;
+      align-items: center;
+      :not(:last-child) {
+        margin-right: 5px;
+      }
+
+      .imageContainer {
+        .bitcoinLogo {
+          width: 32px;
+        }
+      }
+
+      .logoName {
+        color: $yellow;
+      }
+    }
+
+    .menu {
+      ul {
+        display: flex;
+        flex-direction: row;
+        list-style-type: none;
+        align-items: center;
+        li {
+          font-size: 14px;
+          font-weight: 600;
+          color: $yellow;
+          &:hover {
+            cursor: pointer;
+          }
+
+          &:not(:last-child) {
+            margin-right: 40px;
+          }
+        }
+        .buttonListElement {
+          color: $white;
+          background-color: $yellow;
+          font-weight: 500;
+          border-radius: 16px;
+          padding: 4px 15px;
+        }
+      }
+    }
+  }
+}
+
+.mobileContainer {
+  display: none;
+  height: 70px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center ;
+
+  .imageContainer {
+    .bitcoinLogo {
+      height: 45px;
+      width: 45px;
+    }
+  }
+}
+
+// Iphone X
+@media only screen and (max-width: 376px) {
+  .desktopContainer {
+    display: none;
+  }
+
+  .mobileContainer {
+    display: flex;
+  }
+}

@@ -1,0 +1,103 @@
+@import "../../styles/variables.scss";
+
+.container {
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+  max-width: $max-content-width;
+  width: 100%;
+  padding: 40px 0;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .tableContainer {
+    flex-direction: column;
+    width: 100%;
+
+    table {
+      border-collapse: separate;
+      border-spacing: 0 20px;
+
+      .tableRankContainer {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: $yellow;
+        top: -30px;
+        left: -30px;
+        justify-content: center;
+        align-items: center;
+        color: $white;
+        z-index: 19;
+        padding-top: 18px;
+        padding-left: 23px;
+        font-weight: 500;
+      }
+
+      td,
+      th {
+        text-align: center;
+        border: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      // Header row
+      tr:first-child {
+        background-color: $table-header-blue;
+        color: $yellow;
+      }
+
+      tr {
+        height: 50px;
+        margin: 5px 0;
+      }
+
+      tr:not(:first-child) {
+        height: 80px;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}
+
+.goToCasinoButton {
+  border-radius: 20px;
+  background-color: $yellow;
+  width: max-content;
+  padding: 5px 10px;
+  margin: 0 auto;
+  align-items: center;
+
+  a {
+    color: white;
+    margin-right: 5px;
+    margin-top: -3px;
+  }
+
+  :nth-child(2) {
+    transform: rotate(-90deg);
+    color: white;
+  }
+}
+
+// Iphone X
+@media only screen and (max-width: 376px) {
+  .container {
+    text-align: center;
+    .tableContainer {
+      table {
+        th:first-child,
+        td:first-child {
+          display: none;
+        }
+
+        font-size: 0.7rem;
+      }
+    }
+  }
+}
