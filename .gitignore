@@ -4,5 +4,6 @@ Homestead.json
 Homestead.yaml
 .env
 .phpunit.result.cache
+/images/
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
