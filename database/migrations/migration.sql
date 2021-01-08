@@ -1,0 +1,7 @@
+create table `user` (`id` bigint unsigned not null auto_increment primary key, `name` varchar(255) not null, `password` varchar(255) not null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8 collate 'utf8_unicode_ci';
+create table `casino` (`id` bigint unsigned not null auto_increment primary key, `name` varchar(255) not null, `rank` int not null, `rating` smallint not null, `bonus` text not null, `link` varchar(255) not null, `image_link` varchar(255) not null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8 collate 'utf8_unicode_ci';
+alter table `casino` add unique `casino_name_unique`(`name`);
+alter table `casino` add unique `casino_rank_unique`(`rank`);
+create table `key_features` (`id` bigint unsigned not null auto_increment primary key, `name` varchar(255) not null, `casino_id` bigint unsigned not null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8 collate 'utf8_unicode_ci';
+alter table `key_features` add constraint `key_features_casino_id_foreign` foreign key (`casino_id`) references `casino` (`id`) on delete cascade;
+insert into user (name, password) values ('admin', '$2y$10$LWfvQDDiQqed4uYvVT56aObKszwtSHnarrQZDMh31rVydMYLQID9.');

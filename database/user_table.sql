@@ -1,0 +1,1 @@
+create table `user` (`id` bigint unsigned not null auto_increment primary key, `name` varchar(255) not null, `password` varchar(255) not null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8 collate 'utf8_unicode_ci'
