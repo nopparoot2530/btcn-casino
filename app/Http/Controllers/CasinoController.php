@@ -34,7 +34,6 @@ class CasinoController extends Controller
         ]);
 
         $casino->save();
-        print_r($casino->id);
         $jsonKeyFeatures = $request->key_features;
 
         foreach ($jsonKeyFeatures as $keyFeature) {
@@ -46,5 +45,8 @@ class CasinoController extends Controller
 
             $newKeyFeature->save();
         }
+
+        $casino->key_features = KeyFeatures::select('name')->where('casino_id', $casino->id)->get();
+        return $casino;
     }
 }
