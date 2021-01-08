@@ -5,13 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Casino;
 use App\Models\KeyFeatures;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class CasinoController extends Controller
 {
     public function getAllCasino()
     {
-        $casinos = Casino::all();
-        return response()->json([$casinos]);
+        $casinos = Casino::select('name', 'id', 'rank', 'rating', 'bonus')->with(array('KeyFeatures' => function ($query) {
+            $query->select('casino_id', 'name');
+        }))->get();
+        return response()->json($casinos);
+    }
+
+    public function getCasino($id)
+    {
+        $casino = Casino::select('name', 'id', 'rank', 'rating', 'bonus')->with(array('KeyFeatures' => function ($query) {
+            $query->select('casino_id', 'name');
+        }))->find($id);
+        if (!isset($casino)) {
+            return response()->json(['message' => 'not found'], 404);
+        }
+        return $casino;
     }
 
     public function create(Request $request)
@@ -78,5 +92,11 @@ class CasinoController extends Controller
 
         $casino->key_features = $jsonKeyFeatures;
         return $casino;
+    }
+
+    public function delete($id)
+    {
+        Casino::destroy($id);
+        return response()->json(['message' => 'successfully deleted']);
     }
 }
