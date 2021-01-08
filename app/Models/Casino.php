@@ -27,4 +27,14 @@ class Casino extends Model
     {
         return $this->hasMany(KeyFeatures::class);
     }
+
+    public function replaceCurrentImage($newImageLink)
+    {
+        $currentImageName = str_replace(env('SITE_ORIGIN', 'https://bitcoincasinolists.com'), "", $this->image_link);
+        if (file_exists(env("IMAGE_STORAGE_PATH", "./images") . $currentImageName)) {
+            unlink(env("IMAGE_STORAGE_PATH", "./images") . $currentImageName);
+        }
+        $this->image_link = env("SITE_ORIGIN") . "/" . $newImageLink;
+        $this->save();
+    }
 }

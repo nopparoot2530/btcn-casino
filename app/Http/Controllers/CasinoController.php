@@ -94,13 +94,6 @@ class CasinoController extends Controller
         return $casino;
     }
 
-    // public function uploadPicture(Request $request)
-    // {
-    //     $image = $request->file('casino_image');
-    //     $imagesPath = env('IMAGE_STORAGE_PATH', './image_path');
-    //     $image->move($imagesPath);
-    // }
-
     public function uploadImage(Request $request, $id)
     {
 
@@ -117,9 +110,10 @@ class CasinoController extends Controller
             $image = 'U-' . time() . '.' . $file_ext;
 
             if ($request->file('casino_image')->move($destination_path, $image)) {
-                $casino->image_link = env('SITE_ORIGIN', 'https://bitcoincasinolists.com');
+                $newImageLink = env('SITE_ORIGIN', 'https://bitcoincasinolists.com') . '/images/' . $image;
+                $casino->replaceCurrentImage($image);
                 $casino->save();
-                return response()->json(['image_name' => $image]);
+                return response()->json(['image_name' => $newImageLink]);
             } else {
                 return response()->json(['message' => 'image upload failed']);
             }
