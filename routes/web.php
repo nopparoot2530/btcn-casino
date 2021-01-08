@@ -33,15 +33,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/create-pw-hash/{pw}', function ($pw) {
             return Hash::make($pw);
         });
-
-        $router->post('/login', [
-            'uses' => 'AuthController@login'
-        ]);
-
-        $router->get('/me', [
-            'middleware' => 'jwt',
-            'uses' => 'AuthController@me'
-        ]);
+        $router->post('/login', ['uses' => 'AuthController@login']);
+        $router->get('/me', ['middleware' => 'jwt', 'uses' => 'AuthController@me']);
     });
 
     // Casino CRUD routes
@@ -51,7 +44,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/{id}', 'CasinoController@getCasino');
         $router->group(['middleware' => 'jwt'], function () use ($router) {
             $router->post('/', 'CasinoController@create');
-            $router->post('/{id}', 'CasinoController@uploadPicture');
+            $router->post('/{id}', 'CasinoController@uploadImage');
             $router->put('/{id}', 'CasinoController@update');
             $router->delete('/{id}', 'CasinoController@delete');
         });

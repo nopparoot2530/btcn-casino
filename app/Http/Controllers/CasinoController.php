@@ -94,6 +94,40 @@ class CasinoController extends Controller
         return $casino;
     }
 
+    // public function uploadPicture(Request $request)
+    // {
+    //     $image = $request->file('casino_image');
+    //     $imagesPath = env('IMAGE_STORAGE_PATH', './image_path');
+    //     $image->move($imagesPath);
+    // }
+
+    public function uploadImage(Request $request, $id)
+    {
+
+        $casino = Casino::find($id);
+        if (!isset($casino)) {
+            return response()->json(["message" => "casino with the specified id not found"], 404);
+        }
+
+        if ($request->hasFile('casino_image')) {
+            $original_filename = $request->file('casino_image')->getClientOriginalName();
+            $original_filename_arr = explode('.', $original_filename);
+            $file_ext = end($original_filename_arr);
+            $destination_path = env('IMAGE_STORAGE_PATH', './image_path');
+            $image = 'U-' . time() . '.' . $file_ext;
+
+            if ($request->file('casino_image')->move($destination_path, $image)) {
+                $casino->image_link = env('SITE_ORIGIN', 'https://bitcoincasinolists.com');
+                $casino->save();
+                return response()->json(['image_name' => $image]);
+            } else {
+                return response()->json(['message' => 'image upload failed']);
+            }
+        } else {
+            return response()->json(['error' => 'file not found'], 404);
+        }
+    }
+
     public function delete($id)
     {
         Casino::destroy($id);
