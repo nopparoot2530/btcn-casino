@@ -9,6 +9,20 @@
         height: 70%;
         padding: 20px;
         overflow-y: scroll;
+        position: relative;
+
+        .uploadModal {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(#000, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+        }
 
         .casinoListBody {
             width: 100%;
@@ -56,10 +70,9 @@
 
                 .buttonsContainer {
                     margin: 0 0 0 auto;
-                    > :not(:last-child){
+                    > :not(:last-child) {
                         margin: 0 10px 0 0;
                     }
-                    
                 }
             }
         }

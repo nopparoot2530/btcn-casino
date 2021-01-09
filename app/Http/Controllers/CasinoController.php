@@ -113,7 +113,7 @@ class CasinoController extends Controller
                 $newImageLink = env('IMAGE_BASE_URL', 'https://bitcoincasinolists.com/images') . '/' . $image;
                 $casino->replaceCurrentImage($image);
                 $casino->save();
-                return response()->json(['image_name' => $newImageLink]);
+                return response()->json(['image_link' => $newImageLink]);
             } else {
                 return response()->json(['message' => 'image upload failed']);
             }
