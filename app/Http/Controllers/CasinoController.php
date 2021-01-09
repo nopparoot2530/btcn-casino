@@ -124,7 +124,15 @@ class CasinoController extends Controller
 
     public function delete($id)
     {
-        Casino::destroy($id);
+        $casino = Casino::find($id);
+        if (!isset($casino))
+            return response()->json(['message' => 'casino not found'], 404);
+        $currentImageName = str_replace(env('IMAGE_BASE_URL', 'https://bitcoincasinolists.com/images') . '/', "", $casino->image_link);
+        $filePath = env("IMAGE_STORAGE_PATH", "./images") . '/' . $currentImageName;
+        if (file_exists($filePath) && !is_dir($filePath)) {
+            unlink(env("IMAGE_STORAGE_PATH", "./images") . '/' . $currentImageName);
+        }
+        $casino->destroy($id);
         return response()->json(['message' => 'successfully deleted']);
     }
 }

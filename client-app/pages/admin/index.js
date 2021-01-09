@@ -5,6 +5,11 @@ import React from 'react';
 import { useRouter } from 'next/router'
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function Admin() {
 
@@ -14,6 +19,8 @@ export default function Admin() {
   const [isUploading, setIsUploading] = React.useState(false);
   const [uploadProgress, setUploadProgress] = React.useState(50);
   const [inputRefs, setInputRefs] = React.useState({});
+  const [isDeleteDialogOpened, setIsDeleteDialogOpened] = React.useState(false);
+  const [deleteDialogId, setDeleteDialogId] = React.useState(null);
   const router = useRouter();
 
 
@@ -48,10 +55,7 @@ export default function Admin() {
   }
 
   const removeCasinoFromState = (casinoId) => {
-    setCasinos(prevState => prevState.map(casino => {
-      if (casino.id !== casinoId)
-        return casino;
-    }));
+    setCasinos(prevState => prevState.filter(casino => casino.id !== casinoId));
   }
 
   const changePictureOfCasinoInList = (casinoId, newImageUrl) => {
@@ -65,7 +69,13 @@ export default function Admin() {
   const removeCasino = id => {
     client.delete(`/casino/${id}`)
       .then(() => removeCasinoFromState(id))
-      .catch();
+      .catch()
+      .finally(() => setIsDeleteDialogOpened(false));
+  }
+
+  const handleRemoveButtonPressed = id => {
+    setIsDeleteDialogOpened(true);
+    setDeleteDialogId(id);
   }
 
   if (isLoading) {
@@ -76,8 +86,31 @@ export default function Admin() {
     )
   }
 
+
   return (
     <div className={styles.container}>
+      <Dialog
+        style={{ alignItems: "center", justifyContent: "center" }}
+        open={isDeleteDialogOpened}
+        onClose={() => setIsDeleteDialogOpened(false)}
+      >
+        <DialogTitle style={{ cursor: 'move' }}>
+          Delete
+        </DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to remove the casino?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => removeCasino(deleteDialogId)} color="primary">
+            Delete
+          </Button>
+          <Button onClick={() => setIsDeleteDialogOpened(false)} color="primary" autoFocus>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div className={styles.casinoListContainer}>
         <div className={styles.casinoListBody}>
           {
@@ -115,7 +148,7 @@ export default function Admin() {
                     <Button variant="contained" component="span" onClick={() => inputRefs[`${casino.id}_ref`].click()}>Upload Image</Button>
                   </div>
                   <div><Button variant="contained" onClick={() => console.log('valami')}>Edit</Button></div>
-                  <div><Button variant="contained" onClick={() => removeCasino(casino.id)}>Remove</Button></div>
+                  <div><Button variant="contained" onClick={() => handleRemoveButtonPressed(casino.id)}>Remove</Button></div>
                 </div>
               </div>
             ))
