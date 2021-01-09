@@ -1,0 +1,23 @@
+.container {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .loginCardBody {
+        border-radius: 10px;
+        height: 300px;
+        padding: 20px;
+        background-color: #d3d3d3;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+
+        .errorMessage {
+            font-size: 0.9rem;
+            color: #e20c0c;
+        }
+    }
+}
