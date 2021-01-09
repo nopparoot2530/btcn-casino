@@ -10,7 +10,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import EditModal from '../../components/EditModal/EditModal';
+import Modal from '@material-ui/core/Modal';
+import TextField from '@material-ui/core/TextField';
+import AddNewCasinoModal from '../../components/AddNewCasinoModal/AddNewCasinoModal';
 export default function Admin() {
 
   const [isLoading, setIsLoading] = React.useState(true);
@@ -21,9 +24,10 @@ export default function Admin() {
   const [inputRefs, setInputRefs] = React.useState({});
   const [isDeleteDialogOpened, setIsDeleteDialogOpened] = React.useState(false);
   const [deleteDialogId, setDeleteDialogId] = React.useState(null);
+  const [isEditModalOpened, setIsEditModalOpened] = React.useState(false);
+  const [casinoToEditId, setCasinoToEditId] = React.useState();
+  const [isAddNewCasinoModalOpened, setIsAddNewCasinoModalOpened] = React.useState(false);
   const router = useRouter();
-
-
 
   React.useEffect(() => {
     const token = sessionStorage.getItem('_at');
@@ -36,7 +40,8 @@ export default function Admin() {
 
   React.useEffect(() => {
     client('/casino').then(res => setCasinos([...res.data,]));
-  }, [])
+  }, [refreshFlag])
+
 
   const uploadFile = (event, casinoId) => {
     setIsUploading(true);
@@ -78,17 +83,30 @@ export default function Admin() {
     setDeleteDialogId(id);
   }
 
+  const handleEditButtonPressed = id => {
+    setCasinoToEditId(id);
+    setIsEditModalOpened(true);
+  }
+
+  const refresh = () => {
+    setRefreshFlag(prevState => !prevState);
+  }
+
   if (isLoading) {
     return (
-      <div>
-        <div>...Loading</div>
-      </div>
+      <div>...Loading</div>
     )
   }
 
 
   return (
     <div className={styles.container}>
+      {isEditModalOpened &&
+        <EditModal isOpened={isEditModalOpened} close={() => setIsEditModalOpened(false)} casinoId={casinoToEditId} refresh={refresh} />
+      }
+      {isAddNewCasinoModalOpened &&
+        <AddNewCasinoModal isOpened={isAddNewCasinoModalOpened} close={() => setIsAddNewCasinoModalOpened(false)} refresh={refresh} />
+      }
       <Dialog
         style={{ alignItems: "center", justifyContent: "center" }}
         open={isDeleteDialogOpened}
@@ -147,13 +165,16 @@ export default function Admin() {
                     />
                     <Button variant="contained" component="span" onClick={() => inputRefs[`${casino.id}_ref`].click()}>Upload Image</Button>
                   </div>
-                  <div><Button variant="contained" onClick={() => console.log('valami')}>Edit</Button></div>
+                  <div><Button variant="contained" onClick={() => handleEditButtonPressed(casino.id)}>Edit</Button></div>
                   <div><Button variant="contained" onClick={() => handleRemoveButtonPressed(casino.id)}>Remove</Button></div>
                 </div>
               </div>
             ))
           }
         </div>
+      </div>
+      <div className={styles.addNewCasinoButtonContainer}>
+        <Button variant="contained" onClick={() => setIsAddNewCasinoModalOpened(true)}>Add casino</Button>
       </div>
     </div >
   )

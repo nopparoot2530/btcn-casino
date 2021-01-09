@@ -11,16 +11,16 @@ class CasinoController extends Controller
 {
     public function getAllCasino()
     {
-        $casinos = Casino::select('name', 'id', 'rank', 'rating', 'bonus', 'image_link')->with(array('KeyFeatures' => function ($query) {
-            $query->select('casino_id', 'name');
+        $casinos = Casino::select('name', 'id', 'rank', 'rating', 'bonus', 'image_link', 'link')->with(array('KeyFeatures' => function ($query) {
+            $query->select('casino_id', 'id', 'name');
         }))->get();
         return response()->json($casinos);
     }
 
     public function getCasino($id)
     {
-        $casino = Casino::select('name', 'id', 'rank', 'rating', 'bonus')->with(array('KeyFeatures' => function ($query) {
-            $query->select('casino_id', 'name');
+        $casino = Casino::select('name', 'id', 'rank', 'rating', 'bonus', 'link')->with(array('KeyFeatures' => function ($query) {
+            $query->select('casino_id', 'id', 'name');
         }))->find($id);
         if (!isset($casino)) {
             return response()->json(['message' => 'not found'], 404);
@@ -32,7 +32,7 @@ class CasinoController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:casino,name|string',
-            'rank' => 'required|unique:casino,rank|integer',
+            'rank' => 'required|integer',
             'rating' => 'required|integer|max:5|min:1',
             'key_features' => 'required|array',
             'bonus' => 'required|string',
@@ -88,6 +88,7 @@ class CasinoController extends Controller
         foreach ($jsonKeyFeatures as $keyFeature) {
             $databaseKeyFeature = KeyFeatures::find($keyFeature['id']);
             $databaseKeyFeature->name = $keyFeature['name'];
+            $databaseKeyFeature->save();
         }
 
         $casino->key_features = $jsonKeyFeatures;
