@@ -7,8 +7,8 @@ import { useRouter } from 'next/router'
 
 export default function Login() {
 
-    const [isFailed, setIsFailed] = React.useState(false);
     const [loginRequested, setLoginRequested] = React.useState(false);
+    const [isFailed, setIsFailed] = React.useState(false);
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
 

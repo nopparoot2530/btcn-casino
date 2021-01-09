@@ -11,7 +11,7 @@ class CasinoController extends Controller
 {
     public function getAllCasino()
     {
-        $casinos = Casino::select('name', 'id', 'rank', 'rating', 'bonus')->with(array('KeyFeatures' => function ($query) {
+        $casinos = Casino::select('name', 'id', 'rank', 'rating', 'bonus', 'image_link')->with(array('KeyFeatures' => function ($query) {
             $query->select('casino_id', 'name');
         }))->get();
         return response()->json($casinos);
@@ -106,11 +106,11 @@ class CasinoController extends Controller
             $original_filename = $request->file('casino_image')->getClientOriginalName();
             $original_filename_arr = explode('.', $original_filename);
             $file_ext = end($original_filename_arr);
-            $destination_path = env('IMAGE_STORAGE_PATH', './image_path');
+            $destination_path = env('IMAGE_STORAGE_PATH', './images');
             $image = 'U-' . time() . '.' . $file_ext;
 
             if ($request->file('casino_image')->move($destination_path, $image)) {
-                $newImageLink = env('SITE_ORIGIN', 'https://bitcoincasinolists.com') . '/images/' . $image;
+                $newImageLink = env('IMAGE_BASE_URL', 'https://bitcoincasinolists.com/images') . '/' . $image;
                 $casino->replaceCurrentImage($image);
                 $casino->save();
                 return response()->json(['image_name' => $newImageLink]);

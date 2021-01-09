@@ -30,11 +30,11 @@ class Casino extends Model
 
     public function replaceCurrentImage($newImageLink)
     {
-        $currentImageName = str_replace(env('SITE_ORIGIN', 'https://bitcoincasinolists.com'), "", $this->image_link);
+        $currentImageName = str_replace(env('IMAGE_BASE_URL', 'https://bitcoincasinolists.com/images') . '/', "", $this->image_link);
         if (file_exists(env("IMAGE_STORAGE_PATH", "./images") . $currentImageName)) {
             unlink(env("IMAGE_STORAGE_PATH", "./images") . $currentImageName);
         }
-        $this->image_link = env("SITE_ORIGIN") . "/" . $newImageLink;
+        $this->image_link = env('IMAGE_BASE_URL',  'https://bitcoincasinolists.com/images') . '/' . $newImageLink;
         $this->save();
     }
 }

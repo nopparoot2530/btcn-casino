@@ -44,7 +44,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/{id}', 'CasinoController@getCasino');
         $router->group(['middleware' => 'jwt'], function () use ($router) {
             $router->post('/', 'CasinoController@create');
-            $router->post('/{id}', 'CasinoController@uploadImage');
+            $router->post('/{id}/upload-image', 'CasinoController@uploadImage');
             $router->put('/{id}', 'CasinoController@update');
             $router->delete('/{id}', 'CasinoController@delete');
         });
