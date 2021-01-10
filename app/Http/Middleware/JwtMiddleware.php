@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Firebase\JWT\Jwt;
-use Firebase\JWT\ExpiredException;
+use \Firebase\JWT\JWT;
+use \Firebase\JWT\ExpiredException;
 use Closure;
 use Exception;
 use App\Models\User;
@@ -20,7 +20,7 @@ class JwtMiddleware
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        $token = $request->HEADER('Authorization');
+        $token = $request->header('Authorization');
 
         if (!$token) {
             // Unauthorized response if token not there
