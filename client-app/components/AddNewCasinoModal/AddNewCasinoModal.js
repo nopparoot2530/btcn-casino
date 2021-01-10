@@ -7,8 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import { Button, TextField } from '@material-ui/core';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
-
+import SunEditor, { buttonList } from 'suneditor-react';
 import AddIcon from '@material-ui/icons/Add';
+import { useSnackbar } from 'notistack';
+import ErrorSnackbarContent from '../ErrorSnackbarContent/ErrorSnackbarContent';
 
 export default function AddNewCasinoModal({ isOpened, close, refresh }) {
 
@@ -33,6 +35,9 @@ export default function AddNewCasinoModal({ isOpened, close, refresh }) {
             bonus: '<p>example bonus </p>'
         }
     );
+
+    const { enqueueSnackbar } = useSnackbar();
+
 
     const handleChangeName = event => {
         setCasino(prevState => {
@@ -76,12 +81,37 @@ export default function AddNewCasinoModal({ isOpened, close, refresh }) {
         setIsCreating(true);
         client.post(`/casino`, casino)
             .then(() => {
+                enqueueSnackbar('Successfully updated', { variant: 'success' });
                 refresh();
+                close();
             })
-            .catch(res => console.log(res))
-            .finally(() => close())
+            .catch(err => {
+                if (err.response.status === 422) {
+                    enqueueSnackbar(<ErrorSnackbarContent data={err.response.data} />, { variant: 'error' })
+                }
+            })
+            .finally(() => setIsCreating(false))
 
     }
+
+    const handleBonusChange = content => {
+        setCasino(prevState => {
+            return {
+                ...prevState,
+                bonus: content
+            }
+        })
+    }
+
+    const handleChangeRank = event => {
+        setCasino(prevState => {
+            return {
+                ...prevState,
+                rank: event.target.value
+            }
+        })
+    }
+
 
     return (
         <Modal
@@ -101,7 +131,7 @@ export default function AddNewCasinoModal({ isOpened, close, refresh }) {
                 }
                 <Grid container direction="column" spacing={2}>
                     <Grid item>
-                        <Grid container direction="row">
+                        <Grid container direction="row" spacing={2}>
                             <Grid container direction="column" xs={6} spacing={3}>
                                 <Grid item >
                                     <TextField fullWidth id="outlined-basic" label="Name" size="medium" variant="outlined" onChange={handleChangeName} value={casino.name} />
@@ -112,7 +142,7 @@ export default function AddNewCasinoModal({ isOpened, close, refresh }) {
                                 <Grid item direction="column">
                                     <Typography id="discrete-slider-restrict" gutterBottom>
                                         Rating
-                                </Typography>
+                                    </Typography>
                                     <Slider
                                         defaultValue={casino.rating}
                                         onChange={handleChangeRate}
@@ -131,11 +161,30 @@ export default function AddNewCasinoModal({ isOpened, close, refresh }) {
                                         </Grid>
                                     )
                                 }
-
                             </Grid>
-                            <Grid container direction="column" xs={6}>
+                            <Grid container direction="column" xs={6} spacing={3}>
                                 <Grid item>
-                                    {/* TODO rich text editor */}
+                                    <div className={styles.bonusTitle}>
+                                        Bonus
+                                </div>
+                                </Grid>
+                                <Grid item>
+                                    <div className={styles.CKEditorContainer}>
+                                        <SunEditor
+                                            defaultValue={casino.bonus}
+
+                                            setOptions={{
+                                                resizingBar: false,
+                                                height: 200,
+                                                buttonList: [['formatBlock', 'align', 'list', 'bold', 'strike', 'underline', 'italic']] //buttonList.formatting // Or Array of button list, eg. [['font', 'align'], ['image']]
+
+                                            }}
+                                            onChange={handleBonusChange}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item style={{ marginLeft: '20px' }}>
+                                    <TextField id="outlined-basic" label="rank" size="medium" variant="outlined" type="number" onChange={handleChangeRank} value={casino.rank} />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -150,8 +199,8 @@ export default function AddNewCasinoModal({ isOpened, close, refresh }) {
                                     size="small"
                                     startIcon={<AddIcon />}
                                 >
-                                    Add
-                        </Button>
+                                    Save
+                             </Button>
                             </Grid>
                         </Grid>
                     </Grid>

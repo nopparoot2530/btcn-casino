@@ -5,6 +5,8 @@ Homestead.yaml
 .env
 .phpunit.result.cache
 public/images
+public/out
+database/migrations/migration.sql
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 

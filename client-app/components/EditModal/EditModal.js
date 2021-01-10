@@ -9,12 +9,18 @@ import { Button, TextField } from '@material-ui/core';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import SaveIcon from '@material-ui/icons/Save';
+import SunEditor, { buttonList } from 'suneditor-react';
+import { useSnackbar } from 'notistack';
+import ErrorSnackbarContent from '../ErrorSnackbarContent/ErrorSnackbarContent';
+import Backdrop from '@material-ui/core/Backdrop';
 
 export default function EditModal({ isOpened, close, casinoId, refresh }) {
 
     const [casino, setCasino] = React.useState();
     const [isLoading, setIsLoading] = React.useState(true);
     const [isUpdating, setIsUpdating] = React.useState(false);
+
+    const { enqueueSnackbar } = useSnackbar();
 
     React.useEffect(() => {
         if (casinoId !== undefined && casino === undefined) {
@@ -72,24 +78,43 @@ export default function EditModal({ isOpened, close, casinoId, refresh }) {
         setIsUpdating(true);
         client.put(`/casino/${casinoId}`, casino)
             .then(() => {
+                enqueueSnackbar('Successfully created new casino', { variant: 'success' });
                 refresh();
+                close();
             })
-            .finally(() => close());
+            .catch(err => {
+                if (err.response.status === 422) {
+                    enqueueSnackbar(<ErrorSnackbarContent data={err.response.data} />, { variant: 'error' })
+                } else if (err.response.status === 500) {
+                    enqueueSnackbar('Internal server error', { variant: 'error' })
+                }
+            })
+            .finally(() => setIsUpdating(false));
+    }
+
+    const handleBonusChange = content => {
+        setCasino(prevState => {
+            return {
+                ...prevState,
+                bonus: content
+            }
+        })
+    }
+
+    const handleChangeRank = event => {
+        setCasino(prevState => {
+            return {
+                ...prevState,
+                rank: event.target.value
+            }
+        })
     }
 
     if (isLoading && isOpened)
         return (
-            <Modal
-                open={isOpened}
-                onClose={close}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-                style={{ alignItems: "center", justifyContent: "center" }}
-            >
-                <div className={styles.updatingLoaderContainer}>
-                    <CircularProgress />
-                </div>
-            </Modal>
+            <Backdrop className={styles.backdrop} open={true}>
+                <CircularProgress color="primary" />
+            </Backdrop>
         )
 
     return (
@@ -110,7 +135,7 @@ export default function EditModal({ isOpened, close, casinoId, refresh }) {
                 }
                 <Grid container direction="column" spacing={2}>
                     <Grid item>
-                        <Grid container direction="row">
+                        <Grid container direction="row" spacing={2}>
                             <Grid container direction="column" xs={6} spacing={3}>
                                 <Grid item >
                                     <TextField fullWidth id="outlined-basic" label="Name" size="medium" variant="outlined" onChange={handleChangeName} value={casino.name} />
@@ -121,7 +146,7 @@ export default function EditModal({ isOpened, close, casinoId, refresh }) {
                                 <Grid item direction="column">
                                     <Typography id="discrete-slider-restrict" gutterBottom>
                                         Rating
-                                </Typography>
+                                    </Typography>
                                     <Slider
                                         defaultValue={casino.rating}
                                         onChange={handleChangeRate}
@@ -140,11 +165,30 @@ export default function EditModal({ isOpened, close, casinoId, refresh }) {
                                         </Grid>
                                     )
                                 }
-
                             </Grid>
-                            <Grid container direction="column" xs={6}>
+                            <Grid container direction="column" xs={6} spacing={3}>
                                 <Grid item>
-                                    {/* TODO rich text editor */}
+                                    <div className={styles.bonusTitle}>
+                                        Bonus
+                                    </div>
+                                </Grid>
+                                <Grid item>
+                                    <div className={styles.CKEditorContainer}>
+                                        <SunEditor
+                                            defaultValue={casino.bonus}
+
+                                            setOptions={{
+                                                resizingBar: false,
+                                                height: 200,
+                                                buttonList: [['formatBlock', 'align', 'list', 'bold', 'strike', 'underline', 'italic']] //buttonList.formatting // Or Array of button list, eg. [['font', 'align'], ['image']]
+
+                                            }}
+                                            onChange={handleBonusChange}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item style={{ marginLeft: '20px' }}>
+                                    <TextField id="outlined-basic" label="rank" size="medium" variant="outlined" type="number" onChange={handleChangeRank} value={casino.rank} />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -160,7 +204,7 @@ export default function EditModal({ isOpened, close, casinoId, refresh }) {
                                     startIcon={<SaveIcon />}
                                 >
                                     Save
-                        </Button>
+                                 </Button>
                             </Grid>
                         </Grid>
                     </Grid>

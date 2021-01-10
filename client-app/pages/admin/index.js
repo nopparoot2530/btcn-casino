@@ -14,6 +14,7 @@ import EditModal from '../../components/EditModal/EditModal';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import AddNewCasinoModal from '../../components/AddNewCasinoModal/AddNewCasinoModal';
+
 export default function Admin() {
 
   const [isLoading, setIsLoading] = React.useState(true);
@@ -39,6 +40,7 @@ export default function Admin() {
   }, []);
 
   React.useEffect(() => {
+    console.log(process.env.CASINO_IMAGE_PLACEHOLDER)
     client('/casino').then(res => setCasinos([...res.data,]));
   }, [refreshFlag])
 
@@ -142,7 +144,9 @@ export default function Admin() {
             casinos.map((casino, index) => (
               <div className={styles.casinoRow} key={index}>
                 <div className={styles.casinoImageContainer}>
-                  <img src={casino.image_link} />
+                  <img src={
+                    casino.image_link === '' ? process.env.CASINO_IMAGE_PLACEHOLDER : casino.image_link
+                  } />
                 </div>
                 <div className={styles.casinoName}>
                   <h3>
