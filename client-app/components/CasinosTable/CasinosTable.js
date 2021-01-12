@@ -3,6 +3,7 @@ import React from 'react';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'react-loader-spinner'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import client from '../../utils/axiosConfig';
 
 export default function CasinosTable() {
 
@@ -13,43 +14,12 @@ export default function CasinosTable() {
 
     // Fetch casinos and stop loading
     React.useEffect(() => {
-        // TODO Actual fetch logic
+        client(`/casino`)
+            .then(res => {
+                setCasinos(res.data);
+            })
         setIsLoading(true);
-        setCasinos([
-            {
-                rank: 1,
-                name: "best casino 1",
-                rating: 10,
-                key_features: "black jack, roulette",
-                bonus: "free",
-                website: "https://google.com"
-            },
-            {
-                rank: 2,
-                name: "best casino 1",
-                rating: 10,
-                key_features: "black jack, roulette",
-                bonus: "free",
-                website: "https://google.com"
-            },
-            {
-                rank: 3,
-                name: "best casino 1",
-                rating: 10,
-                key_features: "black jack, roulette",
-                bonus: "free",
-                website: "https://google.com"
-            }, {
-                rank: 4,
-                name: "best casino 1",
-                rating: 10,
-                key_features: "black jack, roulette",
-                bonus: "free",
-                website: "https://google.com"
-            },
-        ])
     }, [])
-
 
     // Stop loading
     React.useEffect(() => {
@@ -63,37 +33,47 @@ export default function CasinosTable() {
             <div className={styles.tableContainer}>
                 {
                     isLoading ? (
-                        <Loader type="ThreeDots" color={loaderColor} height={80} width={80} />
-                    ) :
+                            <Loader type="ThreeDots" color={loaderColor} height={80} width={80}/>
+                        ) :
                         (
-                            <table className={styles.table}>
-                                <tr>
-                                    <th>Rank</th>
-                                    <th>Casino</th>
-                                    <th>Rating</th>
-                                    <th>Key Features</th>
-                                    <th>Welcome Bonus</th>
-                                    <th>Website</th>
-                                </tr>
+
+                            <div className={styles.table}>
+                                <div className={styles.tableHeaderRow}>
+                                    {/*<div className={styles.tableHeaderCell}>Rank</div>*/}
+                                    <div className={styles.tableHeaderCell}>Casino</div>
+                                    <div className={styles.tableHeaderCell}>Rating</div>
+                                    <div className={styles.tableHeaderCell}>Key Features</div>
+                                    <div className={styles.tableHeaderCell}>Welcome Bonus</div>
+                                    <div className={styles.tableHeaderCell}>Website</div>
+                                </div>
+
                                 {
                                     casinos.map(casino => (
-                                        <tr>
-                                            <td>
-                                                <div className={styles.tableRankContainer}>
-                                                    {casino.rank}
-                                                </div>
-                                            </td>
-                                            <td>{casino.name}</td>
-                                            <td>{casino.rating}</td>
-                                            <td>{casino.key_features}</td>
-                                            <td>{casino.bonus}</td>
-                                            <td>
-                                                <GoToCasinoButton website={casino.website} />
-                                            </td>
-                                        </tr>
+                                        <div className={styles.tableRow}>
+                                            {/*<div className={styles.tableCell}>*/}
+                                            {/*    <div className={styles.tableRankContainer}>*/}
+                                            {/*        {casino.rank}*/}
+                                            {/*    </div>*/}
+                                            {/*</div>*/}
+                                            <div className={styles.tableCell}>
+                                                <img className={styles.casinoProfilePicture} alt="casino image"
+                                                     src={casino.image_link}/>
+                                            </div>
+                                            <div className={styles.tableCell}>{casino.rating}</div>
+                                            <div className={styles.tableCell}>
+                                                <ul>
+                                                    {casino.key_features.map(feature => <li>{feature.name}</li>)}
+                                                </ul>
+                                            </div>ł
+                                            <div className={styles.tableCell}
+                                                 dangerouslySetInnerHTML={{__html: casino.bonus}}/>
+                                            <div className={styles.tableCell}>
+                                                <GoToCasinoButton website={casino.website}/>
+                                            </div>
+                                        </div>
                                     ))
                                 }
-                            </table>
+                            </div>
                         )
                 }
             </div>
@@ -101,7 +81,7 @@ export default function CasinosTable() {
     )
 }
 
-export function GoToCasinoButton({ website }) {
+export function GoToCasinoButton({website}) {
     return (
         <div className={styles.goToCasinoButton}>
             <a href={website} target="_blank" rel="external">

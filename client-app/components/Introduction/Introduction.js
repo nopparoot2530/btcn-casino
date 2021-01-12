@@ -14,7 +14,7 @@ export default function Introduction() {
                 </div>
             </div>
             <div className={styles.mediaContainer}>
-                <iframe src="https://www.youtube.com/embed/yz5qukVDpgc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {/*<iframe src="https://www.youtube.com/embed/yz5qukVDpgc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*/}
             </div>
             <div className={styles.arrowContainer}>
                 <p>SHOW AVAILABLE PROMOTIONS</p>

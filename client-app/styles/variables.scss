@@ -2,4 +2,62 @@ $yellow: #f99400;
 $white: #ffffff;
 $table-header-blue: #162738;
 $font-color: #162738;
-$max-content-width: 1000px;
+$max-content-width: 100vw;
+
+$mobile-s-width: 320px;
+$mobile-m-width: 375px;
+$mobile-l-width: 425px;
+$tablet-s-width: 768px;
+$tablet-m-width: 1024px;
+$desktop-s-width: 1440px;
+$desktop-m-width: 1920px;
+$desktop-l-width: 2560px;
+
+@mixin mobile-s  {
+    @media only screen and (max-width: #{$mobile-s-width}) {
+        @content;
+    }
+}
+
+@mixin mobile-m  {
+    @media only screen and (max-width: #{$mobile-m-width}) {
+        @content;
+    }
+}
+
+@mixin mobile-l  {
+    @media only screen and (max-width: #{$mobile-l-width}) {
+        @content;
+    }
+}
+
+@mixin tablet-s  {
+    @media only screen and (max-width: #{$tablet-s-width}) {
+        @content;
+    }
+}
+
+@mixin tablet-m  {
+    @media only screen and (max-width: #{$tablet-m-width}) {
+        @content;
+    }
+}
+
+@mixin desktop-s  {
+    @media only screen and (max-width: #{$desktop-s-width}) {
+        @content;
+    }
+}
+
+@mixin desktop-m  {
+    @media only screen and (max-width: #{$desktop-m-width}) {
+        @content;
+    }
+}
+
+
+@mixin desktop-l  {
+    @media only screen and (max-width: #{$desktop-l-width}) {
+        @content;
+    }
+}
