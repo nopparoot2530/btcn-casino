@@ -28,9 +28,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm run build --if-present
-    - name: FTP-Deploy-Action
+    - name: install dependencies
+      working-directory: ./client-app
+      run: npm install
+    - name: build next app
+      run: npm run build --if-present
+    - name: Deploy to server
       uses: SamKirkland/FTP-Deploy-Action@3.1.1
       with:
         ftp-server: ${{ secrets.FTP_SERVER }}
