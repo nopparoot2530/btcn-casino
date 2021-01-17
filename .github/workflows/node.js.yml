@@ -34,6 +34,11 @@ jobs:
     - name: build next app
       working-directory: ./client-app
       run: npm run build --if-present
+    - name: Cache Composer dependencies
+      uses: actions/cache@v2
+      with:
+        path: /tmp/composer-cache
+        key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
     - name: Install php dependencies
       uses: php-actions/composer@v5
       with:
@@ -49,7 +54,7 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: public_html/
         exclude: .git*
-          - client-app/node_modules/**
-          - tests/**
+          - **/node_modules/*
+          - **/tests/*
 
 
