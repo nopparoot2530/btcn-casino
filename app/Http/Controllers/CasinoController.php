@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Casino;
 use App\Models\KeyFeatures;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Psy\Util\Json;
 
 class CasinoController extends Controller
 {
-    public function getAllCasino()
+    public function getAllCasino(): JsonResponse
     {
-        $casinos = Casino::select('name', 'id', 'rank', 'rating', 'bonus', 'image_link', 'link')->with(array('KeyFeatures' => function ($query) {
-            $query->select('casino_id', 'id', 'name');
-        }))->get();
+        $casinos =
+            Casino::select('name', 'id', 'rank', 'rating', 'bonus', 'image_link', 'link')
+                ->orderBy('rank', 'ASC')
+                ->with(array('KeyFeatures' => function ($query) {
+                    $query->select('casino_id', 'id', 'name');
+                }))->get();
         return response()->json($casinos);
     }
 
@@ -32,7 +37,7 @@ class CasinoController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:casino,name|string',
-            'rank' => 'required|integer',
+            'rank' => 'required|unique:casino,rank|integer',
             'rating' => 'required|integer|max:5|min:1',
             'key_features' => 'required|array',
             'bonus' => 'required|string',
