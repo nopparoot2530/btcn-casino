@@ -16,7 +16,7 @@ class CasinoTable extends Migration
         Schema::create('casino', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->integer('rank');
+            $table->integer('rank')->unique();
             $table->smallInteger('rating');
             $table->text('bonus');
             $table->string('link');

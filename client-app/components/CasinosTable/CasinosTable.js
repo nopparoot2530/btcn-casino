@@ -4,6 +4,9 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'react-loader-spinner'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import client from '../../utils/axiosConfig';
+import ReactStars from "react-rating-stars-component/dist/react-stars";
+import CheckedIcon from '../../assets/check.svg';
+
 
 export default function CasinosTable() {
 
@@ -50,23 +53,36 @@ export default function CasinosTable() {
                                 {
                                     casinos.map(casino => (
                                         <div className={styles.tableRow}>
-                                            {/*<div className={styles.tableCell}>*/}
-                                            {/*    <div className={styles.tableRankContainer}>*/}
-                                            {/*        {casino.rank}*/}
-                                            {/*    </div>*/}
-                                            {/*</div>*/}
+
+                                            <div className={styles.tableRankContainer}>
+                                                {casino.rank}
+                                            </div>
+
                                             <div className={styles.tableCell}>
                                                 <img className={styles.casinoProfilePicture} alt="casino image"
-                                                     src={casino.image_link}/>
+                                                     src={casino.image_link || `${process.env.CASINO_IMAGE_PLACEHOLDER}/casino-image-placeholder.jpg`}/>
                                             </div>
-                                            <div className={styles.tableCell}>{casino.rating}</div>
+                                            <div className={`${styles.tableCell} ${styles.starsContainer}`}>
+                                                <ReactStars
+                                                    count={5}
+                                                    isHalf={false}
+                                                    value={casino.rating}
+                                                    edit={false}
+                                                    size={30}
+                                                    activeColor="#f99400"
+                                                />
+                                            </div>
+                                            <div className={`${styles.tableCell} ${styles.keyFeaturesRowsContainer}`}>
+                                                {casino.key_features.map(feature => (
+                                                    <div className={styles.featureRow}>
+                                                        <CheckedIcon/>
+                                                        {feature.name}
+                                                    </div>)
+                                                )}
+                                            </div>
                                             <div className={styles.tableCell}>
-                                                <ul>
-                                                    {casino.key_features.map(feature => <li>{feature.name}</li>)}
-                                                </ul>
-                                            </div>ł
-                                            <div className={styles.tableCell}
-                                                 dangerouslySetInnerHTML={{__html: casino.bonus}}/>
+                                                <div dangerouslySetInnerHTML={{__html: casino.bonus}} className={styles.bonusTextContainer}/>
+                                            </div>
                                             <div className={styles.tableCell}>
                                                 <GoToCasinoButton website={casino.website}/>
                                             </div>
