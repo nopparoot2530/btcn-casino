@@ -9,8 +9,8 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    /** 
-     * Create a new controller instance.
+    /**
+     * Create a nice new controller instance.
      *
      * @return void
      */
@@ -25,11 +25,11 @@ class AuthController extends Controller
         $payload = [
             'iss' => "https://bitcoincasinolists.com", // Issuer of the token
             'sub' => $user->id, // Subject of the token
-            'iat' => time(), // Time when JWT was issued. 
+            'iat' => time(), // Time when JWT was issued.
             'exp' => time() + 86400 // Expiration time
         ];
 
-        // As you can see we are passing `JWT_SECRET` as the second parameter that will 
+        // As you can see we are passing `JWT_SECRET` as the second parameter that will
         // be used to decode the token in the future.
         return JWT::encode($payload, env('JWT_SECRET'));
     }
