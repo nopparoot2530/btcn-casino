@@ -54,7 +54,7 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: public_html/
         exclude: .git*
-          - **/node_modules/*
-          - **/tests/*
+          - client-app/node_modules/**
+          - tests/**
 
 
