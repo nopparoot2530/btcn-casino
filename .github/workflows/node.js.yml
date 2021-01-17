@@ -42,6 +42,7 @@ jobs:
     - name: Install php dependencies
       uses: php-actions/composer@v5
       with:
+        dev: no
         php_version: 7.4
         version: 2
         ssh_key: ${{ secrets.BTCN_KEY }}
