@@ -32,6 +32,7 @@ jobs:
       working-directory: ./client-app
       run: npm install
     - name: build next app
+      working-directory: ./client-app
       run: npm run build --if-present
     - name: Deploy to server
       uses: SamKirkland/FTP-Deploy-Action@3.1.1
@@ -39,5 +40,5 @@ jobs:
         ftp-server: ${{ secrets.FTP_SERVER }}
         ftp-username: ${{ secrets.FTP_USERNAME }}
         ftp-password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: ./public_html/
+        dist_target_dir: "public_html/my-app"
 
