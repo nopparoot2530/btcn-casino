@@ -10,7 +10,7 @@
 | is ready to receive HTTP / Console requests from the environment.
 |
 */
-
+print_r('valami');
 $app = require __DIR__.'/../bootstrap/app.php';
 
 /*
