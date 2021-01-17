@@ -28,7 +28,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: install dependencies
+    - name: install node dependencies
       working-directory: ./client-app
       run: npm install
     - name: build next app
@@ -36,6 +36,11 @@ jobs:
       run: npm run build --if-present
     - name: Install php dependencies
       uses: php-actions/composer@v5
+      with:
+        php_version: 7.4
+        version: 2
+        ssh_key: ${{ secrets.BTCN_KEY }}
+        ssh_key_pub: ${{ secrets.BTCN_KEY_PUB }}
     - name: Deploy to server
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
