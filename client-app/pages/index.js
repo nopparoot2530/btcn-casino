@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar/Navbar';
 import styles from '../styles/Home.module.scss';
 import AwardCardsSection from '../components/AwardCardsSection/AwardCardsSection';
 import CasinosTable from '../components/CasinosTable/CasinosTable';
+// Comment to trigger deploy
 
 export default function Home() {
   return (
