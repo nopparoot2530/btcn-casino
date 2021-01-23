@@ -32,7 +32,9 @@ export default function AwardCard({place, image, rate, keyFeatures, description,
                     )}
                 </div>
                 <div dangerouslySetInnerHTML={{__html: description}} className={styles.bonusTextContainer}/>
-                <GoToCasinoButton website={link}/>
+                <div className={styles.goToButtonContainer}>
+                    <GoToCasinoButton website={link}/>
+                </div>
             </div>
         </div>
     );

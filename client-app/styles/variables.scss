@@ -13,51 +13,57 @@ $desktop-s-width: 1440px;
 $desktop-m-width: 1920px;
 $desktop-l-width: 2560px;
 
-@mixin mobile-s  {
+@mixin mobile-s {
     @media only screen and (max-width: #{$mobile-s-width}) {
         @content;
     }
 }
 
-@mixin mobile-m  {
+@mixin mobile-m {
     @media only screen and (max-width: #{$mobile-m-width}) {
         @content;
     }
 }
 
-@mixin mobile-l  {
+@mixin mobile-l {
     @media only screen and (max-width: #{$mobile-l-width}) {
         @content;
     }
 }
 
-@mixin tablet-s  {
+@mixin tablet-s {
     @media only screen and (max-width: #{$tablet-s-width}) {
         @content;
     }
 }
 
-@mixin tablet-m  {
+@mixin tablet-m {
     @media only screen and (max-width: #{$tablet-m-width}) {
         @content;
     }
 }
 
-@mixin desktop-s  {
+@mixin desktop-s {
     @media only screen and (max-width: #{$desktop-s-width}) {
         @content;
     }
 }
 
-@mixin desktop-m  {
+@mixin desktop-m {
     @media only screen and (max-width: #{$desktop-m-width}) {
         @content;
     }
 }
 
 
-@mixin desktop-l  {
+@mixin desktop-l {
     @media only screen and (max-width: #{$desktop-l-width}) {
+        @content;
+    }
+}
+
+@mixin customWidth($width) {
+    @media only screen and (max-width: #{$width}) {
         @content;
     }
 }

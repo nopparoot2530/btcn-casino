@@ -2,7 +2,8 @@
 
 .container {
     width: 100%;
-    padding: 20px 50px;
+    height: 100%;
+    padding: 20px 30px;
 
     .cardBody {
         width: 100%;
@@ -35,26 +36,64 @@
         }
 
         .trophyIcon {
-            margin-top: 10px;
+            margin-top: 20px;
             width: 30px;
         }
 
         .casinoProfilePicture {
-
+            margin: 20px auto;
+            width: auto;
+            height: 150px;
         }
 
         .starsContainer {
-
+            margin: 0 auto 20px auto;
         }
 
         .keyFeaturesContainer {
-            .featureRow {
+            width: 100%;
+            margin: 0 0 20px 0;
 
+            .featureRow {
+                flex-direction: row;
+                align-items: center;
+                margin: 0 auto;
+                text-transform: capitalize;
+
+
+
+                //@include tablet-m {
+                //    font-size: 0.9rem;
+                //}
+
+                > :first-child {
+                    height: auto;
+                    width: 15px;
+                    margin-right: 10px;
+
+                    //@include tablet-m {
+                    //    width: 10px;
+                    //}
+                }
             }
         }
 
         .bonusTextContainer {
+            flex-direction: column;
+            align-items: center;
+            margin: 0 0 20px 0;
 
+            h1, h2, h3, h4, h5, h6 {
+                font-size: 1.5rem;
+            }
+
+            p {
+                margin: 0;
+            }
+        }
+
+        .goToButtonContainer {
+            margin: 0 0 20px 0;
         }
     }
 }
