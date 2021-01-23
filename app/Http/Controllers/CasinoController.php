@@ -11,14 +11,19 @@ use Psy\Util\Json;
 
 class CasinoController extends Controller
 {
-    public function getAllCasino(): JsonResponse
+    public function getAllCasino(Request $request): JsonResponse
     {
-        $casinos =
-            Casino::select('name', 'id', 'rank', 'rating', 'bonus', 'image_link', 'link')
-                ->orderBy('rank', 'ASC')
-                ->with(array('KeyFeatures' => function ($query) {
-                    $query->select('casino_id', 'id', 'name');
-                }))->get();
+        $defaultNumberOfLimit = 10;
+        $page = $request->get('page');
+        $limit = $request->get('limit') === null ? $defaultNumberOfLimit : $request->get('limit');
+        $casinos = Casino::select('name', 'id', 'rank', 'rating', 'bonus', 'image_link', 'link')
+            ->offset($page * $limit)
+            ->limit($limit)
+            ->orderBy('rank', 'ASC')
+            ->with(array('KeyFeatures' => function ($query) {
+                $query->select('casino_id', 'id', 'name');
+            }))
+            ->get();
         return response()->json($casinos);
     }
 

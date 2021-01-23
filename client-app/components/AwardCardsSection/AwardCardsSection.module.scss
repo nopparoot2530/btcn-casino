@@ -1,45 +1,65 @@
 @import "../../styles/variables.scss";
 
 .container {
-  flex-direction: column;
-  align-self: center;
-  justify-content: center;
-  align-items: center;
-  max-width: $max-content-width;
-  padding: 20px 0 40px 0;
-  width: 100%;
-
-  .textContainer {
     flex-direction: column;
-    width: 100%;
+    align-self: center;
     justify-content: center;
     align-items: center;
+    max-width: $max-content-width;
+    padding: 20px 0 40px 0;
+    width: 90%;
 
-    h2 {
-      margin: 0 0 20px 0;
+    @include tablet-m {
+        width: 50%;
     }
 
-    h3 {
-      margin: 0 0 20px 0;
+    @include customWidth(830px){
+        width: 70%;
     }
-  }
 
-  .cardsContainer {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-  }
+    @include customWidth(490px){
+        width: 80%;
+    }
+
+    @include customWidth(372px){
+        width: 100%;
+    }
+
+    .textContainer {
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+
+        h2 {
+            margin: 0 0 20px 0;
+        }
+
+        h3 {
+            margin: 0 0 20px 0;
+        }
+    }
+
+    .cardsContainer {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+
+        @include tablet-m {
+          flex-direction: column;
+        }
+    }
 }
 
 
 // Iphone X
 @media only screen and (max-width: 376px) {
-  .container {
-    text-align: center;
+    .container {
+        text-align: center;
 
-    .cardsContainer {
-      flex-direction: column;
+        .cardsContainer {
+            flex-direction: column;
+        }
     }
-  }
 }

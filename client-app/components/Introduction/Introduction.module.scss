@@ -8,7 +8,7 @@
   width: 100%;
   &:after {
     background: url(/introduction-background.jpg);
-    background-size: 800px;
+    background-size: cover;
     content: "";
     opacity: 0.3;
     top: 0;
