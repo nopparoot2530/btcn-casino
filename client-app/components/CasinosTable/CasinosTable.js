@@ -84,7 +84,7 @@ export default function CasinosTable() {
                                                 <div dangerouslySetInnerHTML={{__html: casino.bonus}} className={styles.bonusTextContainer}/>
                                             </div>
                                             <div className={styles.tableCell}>
-                                                <GoToCasinoButton website={casino.website}/>
+                                                <GoToCasinoButton website={casino.link}/>
                                             </div>
                                         </div>
                                     ))

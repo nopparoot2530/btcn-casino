@@ -167,6 +167,10 @@
     align-items: center;
     height: max-content;
 
+    &:hover {
+        cursor: pointer;
+    }
+
     a {
         color: white;
         margin-right: 5px;
