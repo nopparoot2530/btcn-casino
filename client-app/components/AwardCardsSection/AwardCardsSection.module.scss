@@ -13,6 +13,18 @@
         width: 50%;
     }
 
+    @include customWidth(830px){
+        width: 70%;
+    }
+
+    @include customWidth(490px){
+        width: 80%;
+    }
+
+    @include customWidth(372px){
+        width: 100%;
+    }
+
     .textContainer {
         flex-direction: column;
         width: 100%;
